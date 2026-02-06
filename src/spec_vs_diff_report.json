@@ -1,0 +1,130 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-06T20:54:21.571Z",
+  "summary": "The diff adds a Motoko backend skeleton plus a new frontend app shell with guest session/local profile handling, theme styling, and static game data (missions, cars, diamond packs). However, several core requested systems (backend guest profile persistence, multiplayer racing, mission progression, economy enforcement, and top-up auditing) are missing or not evidenced. The diff also introduces prohibited changes and content (immutable hook files added/changed and real-world car brands).",
+  "missing_requirements": [
+    {
+      "id": "REQ-2",
+      "requirement": "Backend data models and APIs for player profiles persisted per Internet Identity principal AND per generated guest identifier passed from the frontend.",
+      "reason": "Backend storage shown only maps profiles by Principal and shows no guest identifier support or APIs that accept a guestId. Frontend guest profiles are stored purely in localStorage, not persisted in backend per a guest identifier.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/api/playerApi.ts",
+        "frontend/src/auth/guestSession.ts",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Non-real-time multiplayer racing with lobby create/join, start with 2+ players, turn submissions + polling, deterministic outcome resolution, and persisted results.",
+      "reason": "No race lobby/race state models or backend endpoints are evidenced in backend/main.mo (truncated portion shows only profiles/cars). Frontend shows a Race route/page file reference but no implementation details are provided in the diff summary.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Missions and level progression with tracked completion/progress, gold awards on completion, and persistent XP/level increases from missions and races.",
+      "reason": "Only a static mission list is added. There is no evidenced backend state for per-mission progress/completion, no endpoints/mutations to claim mission rewards, and no demonstrated persistent XP/level logic tied to missions/races.",
+      "evidence": [
+        "frontend/src/gameData/missions.ts",
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Economy rules: gold earned via missions/races; diamonds premium and ONLY obtainable through top-up (no gameplay diamond grants); UI distinguishes gold vs diamonds.",
+      "reason": "UI balances are shown, but there is no evidenced enforcement that diamonds cannot be granted by gameplay (frontend has a generic updateLocalDiamonds function). Also no mission/race reward flow is evidenced at all, so gold/diamond sourcing rules are not implemented/verified.",
+      "evidence": [
+        "frontend/src/components/CurrencyBalances.tsx",
+        "frontend/src/api/playerApi.ts",
+        "frontend/src/hooks/useQueries.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Top-up system UI and backend endpoints to purchase diamond packs (simulation), increase diamonds, and record purchase entries in backend state (audit/history).",
+      "reason": "Static diamond pack definitions exist, but no backend purchase endpoint/audit log is evidenced. Frontend has local diamond mutation helpers but no demonstrated top-up purchase flow integrated with backend persistence/history.",
+      "evidence": [
+        "frontend/src/gameData/diamondPacks.ts",
+        "frontend/src/api/playerApi.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "Generated static image assets (logo, background, currency icons, 20 car silhouettes) present under frontend/public/assets/generated and referenced by UI.",
+      "reason": "UI references generated asset paths, but the diff summary does not show any files added under frontend/public/assets/generated, so presence of required images cannot be confirmed from the provided diff evidence.",
+      "evidence": [
+        "frontend/src/components/HeaderBar.tsx",
+        "frontend/src/components/CurrencyBalances.tsx",
+        "frontend/src/gameData/luxuryCars.ts"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Use of real-world/likely licensed car brands and models in the car list (e.g., Lamborghini, Bugatti, Ferrari, Porsche, Rolls-Royce).",
+      "reason": "Explicitly conflicts with the non-goal of including licensed real-world car brands/models.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/gameData/luxuryCars.ts"
+      ]
+    },
+    {
+      "description": "Changes/additions to files that were declared immutable in the BuildRequest (useInternetIdentity hook, useActor hook, main.tsx).",
+      "reason": "BuildRequest constraint says not to modify files under specified immutable paths; the diff includes these paths as added content, which implies they were changed/introduced against the constraint.",
+      "evidence": [
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/main.tsx"
+      ]
+    },
+    {
+      "description": "Hardcoded principal '2vxsx-fae' used when fetching the player profile.",
+      "reason": "Not requested; also likely incorrect for fetching the currently authenticated user’s profile and suggests unexpected behavior beyond the spec.",
+      "evidence": [
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/api/playerApi.ts",
+    "frontend/src/auth/guestSession.ts",
+    "frontend/src/auth/useAuthMode.ts",
+    "frontend/src/auth/useGuestSession.ts",
+    "frontend/src/components/CurrencyBalances.tsx",
+    "frontend/src/components/GameLayout.tsx",
+    "frontend/src/components/HeaderBar.tsx",
+    "frontend/src/components/NavigationBar.tsx",
+    "frontend/src/components/PlayerProgress.tsx",
+    "frontend/src/gameData/diamondPacks.ts",
+    "frontend/src/gameData/luxuryCars.ts",
+    "frontend/src/gameData/missions.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/utils.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/AuthPage.tsx",
+    "frontend/src/pages/GaragePage.tsx",
+    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/pages/MissionsPage.tsx",
+    "frontend/src/pages/RaceLobbyPage.tsx",
+    "frontend/src/pages/TopUpPage.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,281 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Luxury turn-based multiplayer car racing (frontend)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Provide a login screen offering Internet Identity sign-in or local-only guest mode, with sign-out and a signed-in indicator.",
+      "acceptanceCriteria": [
+        "The UI offers a clear choice between “Sign in with Internet Identity” and “Continue as Guest”.",
+        "Guest mode allows entering the game and using core gameplay/garage features without Internet Identity.",
+        "Internet Identity mode shows the signed-in principal (or equivalent signed-in indicator) and supports signing out.",
+        "No Google/Facebook/third-party authentication options are shown in the UI."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/auth/guestSession.ts",
+          "operation": "create",
+          "description": "Implement a local-only guest session manager that creates/stores a stable guest identifier in browser storage and exposes helpers to read/clear it."
+        },
+        {
+          "path": "frontend/src/auth/useAuthMode.ts",
+          "operation": "create",
+          "description": "Add a small auth-mode hook that combines Internet Identity state (from the existing hook) with guest session state to produce a single app-level auth mode (II vs Guest) and user indicator text (e.g., principal/guest id)."
+        },
+        {
+          "path": "frontend/src/pages/AuthPage.tsx",
+          "operation": "create",
+          "description": "Create an Auth page with two explicit actions: “Sign in with Internet Identity” (calls the existing Internet Identity login) and “Continue as Guest” (creates/loads guest id). Ensure no other auth options are displayed. Use shadcn-ui components for buttons/cards/layout; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/HeaderBar.tsx",
+          "operation": "create",
+          "description": "Create a header component that shows the logo, current auth mode indicator (principal or “Guest”), and a sign-out action that clears II identity and/or guest session. Use shadcn-ui components for dropdown/button; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Add top-level app routing/navigation: show AuthPage when neither II nor guest is active, otherwise show the main game shell. Wire sign-out to return to AuthPage. Use the existing Internet Identity provider/hook as-is (do not modify immutable hook files)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Implement a luxury-themed garage with exactly 20 car entries, including locked/owned states, selection, and unlock flows using gold/diamonds.",
+      "acceptanceCriteria": [
+        "The garage shows 20 cars with distinct names and stats.",
+        "Players can select an owned car as their active car.",
+        "Locked cars show their unlock cost/requirement (gold or diamonds where applicable).",
+        "Unlocking a car deducts the correct currency and updates owned state in backend persistence."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/gameData/luxuryCars.ts",
+          "operation": "create",
+          "description": "Define the canonical list of exactly 20 luxury car entries (id, name, rarity/tier, base stats, unlock costs) and map each to its corresponding generated silhouette card image path under frontend/public/assets/generated (car-01...car-20)."
+        },
+        {
+          "path": "frontend/src/api/playerApi.ts",
+          "operation": "create",
+          "description": "Create a frontend API wrapper that calls backend actor capabilities when available and supports passing a guest identifier via optional (actor as any) methods for guest persistence. Keep a local fallback (guest-only) profile state so core garage interactions work for guest mode while backend support is being completed."
+        },
+        {
+          "path": "frontend/src/pages/GaragePage.tsx",
+          "operation": "create",
+          "description": "Build the Garage screen showing the 20 cars as selectable cards with owned/locked state, stats display, unlock requirement (free/gold/diamonds), and actions to unlock/select. Render the car silhouette images from frontend/public/assets/generated. Use shadcn-ui components for cards/tabs/buttons/dialogs; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/CurrencyBalances.tsx",
+          "operation": "create",
+          "description": "Add a reusable balance strip that shows gold and diamonds totals with the generated currency icons, and is used on Garage (and other) screens. Use shadcn-ui components for layout/typography; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire GaragePage into the in-app navigation (tab/side nav) and ensure it is reachable after choosing Internet Identity or Guest mode."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement non-real-time multiplayer racing UI: lobby creation/joining, readiness, turn submissions, and polling-based progression and results viewing.",
+      "acceptanceCriteria": [
+        "A player can create a race lobby and receive a join code (or an equivalent join mechanism).",
+        "A second player can join the lobby and both players can see lobby state (players list, readiness).",
+        "Race progression occurs via explicit actions (turn submissions) and periodic polling from the frontend (React Query).",
+        "Race results are reproducible from the same inputs (deterministic resolution) and persisted so both players can view the completed result."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/api/raceApi.ts",
+          "operation": "create",
+          "description": "Create a frontend race API wrapper that uses the backend actor via optional (actor as any) calls for: create lobby, join lobby, toggle ready, submit turn/action, fetch lobby/race state, and fetch completed results. Implement React Query-friendly functions and polling intervals (no WebSockets)."
+        },
+        {
+          "path": "frontend/src/pages/RaceLobbyPage.tsx",
+          "operation": "create",
+          "description": "Create a Race Lobby screen that lets a player create a lobby to get a join code and lets another player join via code (or list if supported). Display players list and readiness state, with buttons to ready/start when conditions are met. Use shadcn-ui components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/RacePage.tsx",
+          "operation": "create",
+          "description": "Create a turn-based Race screen that shows race status, each phase/turn, the player’s selected car stats, and explicit action submission controls. Use React Query polling to refresh race state and show a deterministic completed result view when finished. Use shadcn-ui components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register navigation/routes for RaceLobbyPage and RacePage, ensuring they are accessible from the main game shell and that deep-links (if used) land correctly when already in a lobby/race."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add missions listing, progress, completion, and level/XP indicators tied to missions and races, persisting via backend when available.",
+      "acceptanceCriteria": [
+        "The app lists available missions with progress indicators and completion state.",
+        "Completing a mission grants gold and updates backend state.",
+        "Player level/XP increases based on mission/race participation and persists across sessions.",
+        "Gold rewards are frequent and achievable through normal play without purchases."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/gameData/missions.ts",
+          "operation": "create",
+          "description": "Define a set of missions (daily/weekly or tiered) with titles, descriptions, target counters, and reward gold amounts. Ensure no mission defines diamond rewards."
+        },
+        {
+          "path": "frontend/src/api/missionsApi.ts",
+          "operation": "create",
+          "description": "Create a missions API wrapper that reads mission progress/completion from backend when available (via optional actor methods) and falls back to local guest storage, including applying gold rewards and updating level/XP indicators."
+        },
+        {
+          "path": "frontend/src/pages/MissionsPage.tsx",
+          "operation": "create",
+          "description": "Build a Missions screen listing missions with progress bars/indicators and completion states, plus actions to claim/complete where applicable. Display updated gold and level/XP. Use shadcn-ui components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/PlayerProgress.tsx",
+          "operation": "create",
+          "description": "Create a small reusable component to display player level/XP and key stats used across Missions/Home. Use shadcn-ui components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire MissionsPage into the in-app navigation and ensure mission rewards update the visible balances/progress across screens."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Enforce economy rules in the UI: gold is earned via missions/races; diamonds are premium and only increase through top-up; display balances clearly.",
+      "acceptanceCriteria": [
+        "Gold balance increases via mission/race rewards.",
+        "No mission/race reward path grants diamonds.",
+        "Diamond balance only increases through the top-up flow.",
+        "UI clearly distinguishes gold vs diamonds and shows current balances."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/gameLogic/economyGuards.ts",
+          "operation": "create",
+          "description": "Add frontend guard helpers that prevent awarding diamonds from any mission/race reward UI flows and centralize reward application rules (gold-only for play rewards)."
+        },
+        {
+          "path": "frontend/src/components/CurrencyBalances.tsx",
+          "operation": "modify",
+          "description": "Ensure balance display clearly distinguishes gold vs diamonds using the generated icons and consistent formatting across screens. Use shadcn-ui components for consistent styling; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/api/playerApi.ts",
+          "operation": "modify",
+          "description": "Update profile update helpers to apply economy rules consistently: gameplay reward methods only mutate gold/XP/level (never diamonds), while diamond mutation is only exposed via top-up purchase helpers."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add a Top Up screen that simulates diamond pack purchases, updates diamonds immediately, records a purchase entry, and supports unlocking premium cars with diamonds.",
+      "acceptanceCriteria": [
+        "A “Top Up” screen lists at least 3 diamond packs with different amounts/prices (prices can be display-only).",
+        "Purchasing a pack increases diamonds immediately and records a purchase entry in backend state (for audit/history).",
+        "Premium cars can be unlocked with diamonds and remain owned after unlock.",
+        "The system does not integrate with external payment providers (simulation only)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/gameData/diamondPacks.ts",
+          "operation": "create",
+          "description": "Define at least 3 diamond pack options with different diamond amounts and display-only prices."
+        },
+        {
+          "path": "frontend/src/api/topUpApi.ts",
+          "operation": "create",
+          "description": "Create a top-up API wrapper that triggers simulated purchases via backend when available (via optional actor methods) and stores purchase history for guest mode locally. Ensure this is the only UI path that increases diamonds."
+        },
+        {
+          "path": "frontend/src/pages/TopUpPage.tsx",
+          "operation": "create",
+          "description": "Build the Top Up screen listing diamond packs, confirming purchase, showing immediate diamond balance update, and displaying a simple purchase history list. Use shadcn-ui components for list/dialogs/buttons; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/GaragePage.tsx",
+          "operation": "modify",
+          "description": "Ensure premium cars show diamond unlock requirements and that unlocking with diamonds is possible after top-up increases the diamond balance."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire TopUpPage into the in-app navigation and ensure returning to Garage reflects updated diamond balances immediately."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Apply a cohesive luxury racing theme (non-blue/purple primary) consistently across all screens with responsive layout.",
+      "acceptanceCriteria": [
+        "All main screens share a consistent palette, typography, spacing, and component styling.",
+        "Primary colors are not blue/purple; theme feels “luxury racing” (e.g., dark graphite with gold accents).",
+        "UI is responsive and usable on mobile and desktop."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styling (Tailwind base + app theme tokens/variables as needed) for a dark graphite background with gold accents, consistent typography and spacing. Ensure responsiveness (mobile-first) and avoid blue/purple as primary colors."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "create",
+          "description": "Add/adjust Tailwind theme configuration to support the luxury palette (graphite/black + gold accents) and consistent radius/shadows, without changing shadcn-ui source files. Verify shadcn-ui theming expectations before implementing."
+        },
+        {
+          "path": "frontend/src/components/GameLayout.tsx",
+          "operation": "create",
+          "description": "Create a shared layout wrapper used by all in-game screens (home/garage/race/missions/top-up) that applies consistent spacing, header placement, and background treatment. Use shadcn-ui layout primitives where applicable; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap authenticated/guest in-game routes with GameLayout to enforce consistent styling across all screens."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Wire required generated static images (logo, background, currency icons, 20 car card silhouettes) into the UI from frontend public assets.",
+      "acceptanceCriteria": [
+        "All required generated images are present under frontend/public/assets/generated and referenced directly by the frontend.",
+        "The UI displays the logo in the header/auth screen, currency icons near balances, and car visuals in the garage.",
+        "No backend routes are used to serve images."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/HeaderBar.tsx",
+          "operation": "modify",
+          "description": "Render the logo image from frontend/public/assets/generated/logo.dim_512x512.png in the header and/or auth context. Ensure it is referenced as a static public asset (no backend)."
+        },
+        {
+          "path": "frontend/src/pages/AuthPage.tsx",
+          "operation": "modify",
+          "description": "Add the logo (frontend/public/assets/generated/logo.dim_512x512.png) and use the racing background (frontend/public/assets/generated/racing-bg.dim_1920x1080.png) as a static visual element on the auth screen. Ensure no backend image serving is used."
+        },
+        {
+          "path": "frontend/src/components/CurrencyBalances.tsx",
+          "operation": "modify",
+          "description": "Render currency icons next to balances using frontend/public/assets/generated/icon-gold.dim_256x256.png and frontend/public/assets/generated/icon-diamond.dim_256x256.png."
+        },
+        {
+          "path": "frontend/src/gameData/luxuryCars.ts",
+          "operation": "modify",
+          "description": "Ensure each of the 20 cars is mapped to the exact generated silhouette card paths: frontend/public/assets/generated/car-01.dim_512x256.png through frontend/public/assets/generated/car-20.dim_512x256.png, and that Garage uses this mapping for visuals."
+        },
+        {
+          "path": "frontend/src/pages/GaragePage.tsx",
+          "operation": "modify",
+          "description": "Display the car silhouette card images for all 20 cars using the mapped static asset paths under frontend/public/assets/generated (car-01...car-20)."
+        }
+      ]
+    }
+  ]
+}

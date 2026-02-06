@@ -1,0 +1,172 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-authentication-with-two-modes-1-internet-identity-login-using-the-existing-internet-identity-hook-actor-patterns-in-the-template-and-2-guest-play-that-creates-a-local-only-guest-session-without-requiring-internet-identity",
+      "featureTitle": "Implement authentication with two modes: (1) Internet Identity login using the existing Internet Identity hook/actor patterns in the template, and (2) guest play that creates a local-only guest session without requiring Internet Identity.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/auth/guestSession.ts",
+        "frontend/src/auth/useAuthMode.ts",
+        "frontend/src/components/HeaderBar.tsx",
+        "frontend/src/pages/AuthPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-garage-vehicle-system-with-exactly-20-selectable-car-entries-luxury-expensive-theme-including-car-name-rarity-tier-base-stats-e-g-speed-acceleration-handling-unlock-requirement-free-gold-or-diamonds-and-an-owned-locked-state-per-player",
+      "featureTitle": "Implement a garage/vehicle system with exactly 20 selectable car entries (luxury/expensive theme), including car name, rarity/tier, base stats (e.g., speed/acceleration/handling), unlock requirement (free, gold, or diamonds), and an owned/locked state per player.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/api/playerApi.ts",
+        "frontend/src/components/CurrencyBalances.tsx",
+        "frontend/src/gameData/luxuryCars.ts",
+        "frontend/src/pages/GaragePage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-non-real-time-multiplayer-racing-as-a-turn-based-or-periodic-update-mode-no-websockets-include-creating-a-race-lobby-joining-a-lobby-via-code-list-starting-a-race-with-2-players-and-resolving-race-outcomes-deterministically-based-on-car-stats-and-player-inputs-for-each-turn-phase",
+      "featureTitle": "Implement non-real-time multiplayer racing as a turn-based or periodic-update mode (no WebSockets). Include: creating a race lobby, joining a lobby via code/list, starting a race with 2+ players, and resolving race outcomes deterministically based on car stats and player inputs for each turn/phase.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/RaceLobbyPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-missions-and-level-progression-define-a-set-of-missions-daily-weekly-or-tiered-track-completion-award-gold-for-mission-completion-and-increase-player-level-xp-based-on-completed-races-and-missions",
+      "featureTitle": "Add missions and level progression: define a set of missions (daily/weekly or tiered), track completion, award gold for mission completion, and increase player level/XP based on completed races and missions.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/PlayerProgress.tsx",
+        "frontend/src/gameData/missions.ts",
+        "frontend/src/pages/MissionsPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-currencies-and-economy-rules-gold-is-earned-through-missions-races-and-is-used-for-some-unlocks-diamonds-are-premium-and-can-only-be-obtained-through-the-in-app-top-up-flow-no-gameplay-grants-diamonds",
+      "featureTitle": "Implement currencies and economy rules: gold is earned through missions/races and is used for some unlocks; diamonds are premium and can only be obtained through the in-app top-up flow (no gameplay grants diamonds).",
+      "files": [
+        "frontend/src/api/playerApi.ts",
+        "frontend/src/components/CurrencyBalances.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-top-up-system-ui-and-backend-endpoints-to-purchase-diamond-packs-simulated-in-app-purchases-no-external-payment-processor-provide-multiple-diamond-pack-options-and-apply-purchased-diamonds-to-the-player-balance-use-diamonds-to-unlock-premium-luxury-cars",
+      "featureTitle": "Create a top-up system UI and backend endpoints to purchase diamond packs (simulated in-app purchases; no external payment processor). Provide multiple diamond pack options and apply purchased diamonds to the player balance. Use diamonds to unlock premium luxury cars.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/gameData/diamondPacks.ts",
+        "frontend/src/pages/GaragePage.tsx",
+        "frontend/src/pages/TopUpPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-cohesive-visual-theme-for-the-game-ui-and-apply-it-consistently-across-all-screens-auth-home-garage-race-lobby-race-view-missions-top-up-choose-a-distinct-style-appropriate-for-luxury-car-racing-avoid-blue-purple-as-primary-colors",
+      "featureTitle": "Create a cohesive visual theme for the game UI and apply it consistently across all screens (auth, home, garage, race lobby, race view, missions, top-up). Choose a distinct style appropriate for luxury car racing (avoid blue/purple as primary colors).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/GameLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-generated-static-image-assets-for-the-game-logo-currency-icons-car-cards-silhouettes-and-a-racing-background-and-render-them-in-the-ui-from-the-frontend-public-assets-directory",
+      "featureTitle": "Add generated static image assets for the game (logo, currency icons, car cards/silhouettes, and a racing background) and render them in the UI from the frontend public assets directory.",
+      "files": [
+        "frontend/src/components/CurrencyBalances.tsx",
+        "frontend/src/components/HeaderBar.tsx",
+        "frontend/src/gameData/luxuryCars.ts",
+        "frontend/src/pages/AuthPage.tsx",
+        "frontend/src/pages/GaragePage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

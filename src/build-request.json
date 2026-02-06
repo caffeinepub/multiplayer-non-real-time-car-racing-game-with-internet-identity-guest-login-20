@@ -1,0 +1,222 @@
+{
+  "kind": "build_request",
+  "title": "Multiplayer (non-real-time) car racing game with Internet Identity/guest login, 20-car garage, missions, and top-up diamonds",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement authentication with two modes: (1) Internet Identity login using the existing Internet Identity hook/actor patterns in the template, and (2) guest play that creates a local-only guest session without requiring Internet Identity.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1",
+          "msg-6"
+        ],
+        "quotes": [
+          "Create a multi player car racing game login type google, facebook and all so guest",
+          "Option C"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The UI offers a clear choice between “Sign in with Internet Identity” and “Continue as Guest”.",
+        "Guest mode allows entering the game and using core gameplay/garage features without Internet Identity.",
+        "Internet Identity mode shows the signed-in principal (or equivalent signed-in indicator) and supports signing out.",
+        "No Google/Facebook/third-party authentication options are shown in the UI."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create backend data models and APIs for player profiles including: display name (optional), level/progress, currencies (gold, diamonds), owned cars, selected car, and basic stats needed for missions and races. Persist this state per principal for Internet Identity users and per generated guest identifier for guest users.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Create a multi player car racing game ... unique mission and level, and rewards like gold coin ... and diamond is expensive it's come only top up"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes stable query/update methods to create/read/update a player profile.",
+        "Profiles include gold and diamonds balances, level/progress, and owned/selected car.",
+        "Guest profiles are supported via a guest identifier passed from the frontend.",
+        "State persists across refresh/reload for Internet Identity users and for guests on the same device/session (frontend stores and reuses the guest identifier)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement a garage/vehicle system with exactly 20 selectable car entries (luxury/expensive theme), including car name, rarity/tier, base stats (e.g., speed/acceleration/handling), unlock requirement (free, gold, or diamonds), and an owned/locked state per player.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Option C"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The garage shows 20 cars with distinct names and stats.",
+        "Players can select an owned car as their active car.",
+        "Locked cars show their unlock cost/requirement (gold or diamonds where applicable).",
+        "Unlocking a car deducts the correct currency and updates owned state in backend persistence."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement non-real-time multiplayer racing as a turn-based or periodic-update mode (no WebSockets). Include: creating a race lobby, joining a lobby via code/list, starting a race with 2+ players, and resolving race outcomes deterministically based on car stats and player inputs for each turn/phase.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Create a multi player car racing game"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A player can create a race lobby and receive a join code (or an equivalent join mechanism).",
+        "A second player can join the lobby and both players can see lobby state (players list, readiness).",
+        "Race progression occurs via explicit actions (turn submissions) and periodic polling from the frontend (React Query).",
+        "Race results are reproducible from the same inputs (deterministic resolution) and persisted so both players can view the completed result."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add missions and level progression: define a set of missions (daily/weekly or tiered), track completion, award gold for mission completion, and increase player level/XP based on completed races and missions.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "unique mission and level, and rewards like gold coin are player get easily"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The app lists available missions with progress indicators and completion state.",
+        "Completing a mission grants gold and updates backend state.",
+        "Player level/XP increases based on mission/race participation and persists across sessions.",
+        "Gold rewards are frequent and achievable through normal play without purchases."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement currencies and economy rules: gold is earned through missions/races and is used for some unlocks; diamonds are premium and can only be obtained through the in-app top-up flow (no gameplay grants diamonds).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "gold coin are player get easily and diamond is expensive it's come only top up"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Gold balance increases via mission/race rewards.",
+        "No mission/race reward path grants diamonds.",
+        "Diamond balance only increases through the top-up flow.",
+        "UI clearly distinguishes gold vs diamonds and shows current balances."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Create a top-up system UI and backend endpoints to purchase diamond packs (simulated in-app purchases; no external payment processor). Provide multiple diamond pack options and apply purchased diamonds to the player balance. Use diamonds to unlock premium luxury cars.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "top up system their all expensive and luxury car in top up"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A “Top Up” screen lists at least 3 diamond packs with different amounts/prices (prices can be display-only).",
+        "Purchasing a pack increases diamonds immediately and records a purchase entry in backend state (for audit/history).",
+        "Premium cars can be unlocked with diamonds and remain owned after unlock.",
+        "The system does not integrate with external payment providers (simulation only)."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Create a cohesive visual theme for the game UI and apply it consistently across all screens (auth, home, garage, race lobby, race view, missions, top-up). Choose a distinct style appropriate for luxury car racing (avoid blue/purple as primary colors).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1",
+          "msg-6"
+        ],
+        "quotes": [
+          "Create a multi player car racing game",
+          "Option C"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All main screens share a consistent palette, typography, spacing, and component styling.",
+        "Primary colors are not blue/purple; theme feels “luxury racing” (e.g., dark graphite with gold accents).",
+        "UI is responsive and usable on mobile and desktop."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Add generated static image assets for the game (logo, currency icons, car cards/silhouettes, and a racing background) and render them in the UI from the frontend public assets directory.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "car racing game ... rewards like gold coin ... diamond"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All required generated images are present under frontend/public/assets/generated and referenced directly by the frontend.",
+        "The UI displays the logo in the header/auth screen, currency icons near balances, and car visuals in the garage.",
+        "No backend routes are used to serve images."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
+    "Do not add Google/Facebook or any third-party authentication; only Internet Identity and guest mode are allowed.",
+    "Do not use WebSockets or real-time sockets; multiplayer must use polling/turn-based updates.",
+    "Do not modify files under frontend immutable paths (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui). Compose and build around them instead.",
+    "Use English for all user-facing UI text."
+  ],
+  "nonGoals": [
+    "Including “all cars in the world” or licensed real-world car brands/models.",
+    "Integrating real-money payments (Stripe/Apple/Google Pay) or any external payment provider.",
+    "Real-time racing with continuous synchronization.",
+    "Third-party social login beyond Internet Identity."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Luxury racing game logo mark, minimal, high-contrast (logo.dim_512x512.png)",
+      "Wide dark racing track background with subtle motion blur, no text (racing-bg.dim_1920x1080.png)",
+      "Gold coin icon, flat vector style, high contrast (icon-gold.dim_256x256.png)",
+      "Diamond gem icon, flat vector style, high contrast (icon-diamond.dim_256x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-01.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-02.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-03.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-04.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-05.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-06.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-07.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-08.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-09.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-10.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-11.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-12.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-13.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-14.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-15.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-16.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-17.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-18.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-19.dim_512x256.png)",
+      "Set of 20 distinct luxury car silhouette card images, dark-on-dark with accent highlights (car-20.dim_512x256.png)"
+    ],
+    "edits": []
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-06T20:54:21.575Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 9,
+    "implemented": 8,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Implement authentication with two modes: (1) Internet Identity login using the existing Internet Identity hook/actor patterns in the template, and (2) guest play that creates a local-only guest session without requiring Internet Identity.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/auth/guestSession.ts",
+          "frontend/src/auth/useAuthMode.ts",
+          "frontend/src/pages/AuthPage.tsx",
+          "frontend/src/components/HeaderBar.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/auth/guestSession.ts",
+          "frontend/src/auth/useAuthMode.ts",
+          "frontend/src/pages/AuthPage.tsx",
+          "frontend/src/components/HeaderBar.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Create backend data models and APIs for player profiles including: display name (optional), level/progress, currencies (gold, diamonds), owned cars, selected car, and basic stats needed for missions and races. Persist this state per principal for Internet Identity users and per generated guest identifier for guest users.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Implement a garage/vehicle system with exactly 20 selectable car entries (luxury/expensive theme), including car name, rarity/tier, base stats (e.g., speed/acceleration/handling), unlock requirement (free, gold, or diamonds), and an owned/locked state per player.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/gameData/luxuryCars.ts",
+          "frontend/src/api/playerApi.ts",
+          "frontend/src/pages/GaragePage.tsx",
+          "frontend/src/components/CurrencyBalances.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/gameData/luxuryCars.ts",
+          "frontend/src/api/playerApi.ts",
+          "frontend/src/pages/GaragePage.tsx",
+          "frontend/src/components/CurrencyBalances.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Implement non-real-time multiplayer racing as a turn-based or periodic-update mode (no WebSockets). Include: creating a race lobby, joining a lobby via code/list, starting a race with 2+ players, and resolving race outcomes deterministically based on car stats and player inputs for each turn/phase.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/api/raceApi.ts",
+          "frontend/src/pages/RaceLobbyPage.tsx",
+          "frontend/src/pages/RacePage.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/RaceLobbyPage.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-5",
+        "summary": "Add missions and level progression: define a set of missions (daily/weekly or tiered), track completion, award gold for mission completion, and increase player level/XP based on completed races and missions.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/gameData/missions.ts",
+          "frontend/src/api/missionsApi.ts",
+          "frontend/src/pages/MissionsPage.tsx",
+          "frontend/src/components/PlayerProgress.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/gameData/missions.ts",
+          "frontend/src/pages/MissionsPage.tsx",
+          "frontend/src/components/PlayerProgress.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-6",
+        "summary": "Implement currencies and economy rules: gold is earned through missions/races and is used for some unlocks; diamonds are premium and can only be obtained through the in-app top-up flow (no gameplay grants diamonds).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/gameLogic/economyGuards.ts",
+          "frontend/src/components/CurrencyBalances.tsx",
+          "frontend/src/api/playerApi.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/CurrencyBalances.tsx",
+          "frontend/src/api/playerApi.ts"
+        ]
+      },
+      {
+        "id": "REQ-7",
+        "summary": "Create a top-up system UI and backend endpoints to purchase diamond packs (simulated in-app purchases; no external payment processor). Provide multiple diamond pack options and apply purchased diamonds to the player balance. Use diamonds to unlock premium luxury cars.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/gameData/diamondPacks.ts",
+          "frontend/src/api/topUpApi.ts",
+          "frontend/src/pages/TopUpPage.tsx",
+          "frontend/src/pages/GaragePage.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/gameData/diamondPacks.ts",
+          "frontend/src/pages/TopUpPage.tsx",
+          "frontend/src/pages/GaragePage.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-8",
+        "summary": "Create a cohesive visual theme for the game UI and apply it consistently across all screens (auth, home, garage, race lobby, race view, missions, top-up). Choose a distinct style appropriate for luxury car racing (avoid blue/purple as primary colors).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js",
+          "frontend/src/components/GameLayout.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js",
+          "frontend/src/components/GameLayout.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-9",
+        "summary": "Add generated static image assets for the game (logo, currency icons, car cards/silhouettes, and a racing background) and render them in the UI from the frontend public assets directory.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/HeaderBar.tsx",
+          "frontend/src/pages/AuthPage.tsx",
+          "frontend/src/components/CurrencyBalances.tsx",
+          "frontend/src/gameData/luxuryCars.ts",
+          "frontend/src/pages/GaragePage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/HeaderBar.tsx",
+          "frontend/src/pages/AuthPage.tsx",
+          "frontend/src/components/CurrencyBalances.tsx",
+          "frontend/src/gameData/luxuryCars.ts",
+          "frontend/src/pages/GaragePage.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/main.mo",
+    "build-request.json",
+    "build-template/Dockerfile",
+    "build-template/LICENSE",
+    "build-template/README.md",
+    "build-template/deploy.sh",
+    "build-template/icp.yaml",
+    "build-template/package.json",
+    "build-template/pnpm-lock.yaml",
+    "build-template/pnpm-workspace.yaml",
+    "build-template/scripts/prune-unused-images.js",
+    "build-template/scripts/resize-images.js",
+    "build-template/src/backend/canister.yaml",
+    "build-template/src/backend/system-idl/aaaaa-aa.did",
+    "build-template/src/frontend/canister.yaml",
+    "build-template/src/frontend/components.json",
+    "build-template/src/frontend/env.json",
+    "build-template/src/frontend/eslint-rules/no-bigint-in-query-keys.js",
+    "build-template/src/frontend/eslint-rules/require-internet-identity-provider.js",
+    "build-template/src/frontend/eslint.config.js",
+    "build-template/src/frontend/package.json",
+    "build-template/src/frontend/postcss.config.js",
+    "build-template/src/frontend/src/components/ui/accordion.tsx",
+    "build-template/src/frontend/src/components/ui/alert-dialog.tsx",
+    "build-template/src/frontend/src/components/ui/alert.tsx",
+    "build-template/src/frontend/src/components/ui/aspect-ratio.tsx",
+    "build-template/src/frontend/src/components/ui/avatar.tsx",
+    "build-template/src/frontend/src/components/ui/badge.tsx",
+    "build-template/src/frontend/src/components/ui/breadcrumb.tsx",
+    "build-template/src/frontend/src/components/ui/button.tsx",
+    "build-template/src/frontend/src/components/ui/calendar.tsx",
+    "build-template/src/frontend/src/components/ui/card.tsx",
+    "build-template/src/frontend/src/components/ui/carousel.tsx",
+    "build-template/src/frontend/src/components/ui/chart.tsx",
+    "build-template/src/frontend/src/components/ui/checkbox.tsx",
+    "build-template/src/frontend/src/components/ui/collapsible.tsx",
+    "build-template/src/frontend/src/components/ui/command.tsx",
+    "build-template/src/frontend/src/components/ui/context-menu.tsx",
+    "build-template/src/frontend/src/components/ui/dialog.tsx",
+    "build-template/src/frontend/src/components/ui/drawer.tsx",
+    "build-template/src/frontend/src/components/ui/dropdown-menu.tsx",
+    "build-template/src/frontend/src/components/ui/form.tsx",
+    "build-template/src/frontend/src/components/ui/hover-card.tsx",
+    "build-template/src/frontend/src/components/ui/input-otp.tsx",
+    "build-template/src/frontend/src/components/ui/input.tsx",
+    "build-template/src/frontend/src/components/ui/label.tsx",
+    "build-template/src/frontend/src/components/ui/menubar.tsx",
+    "build-template/src/frontend/src/components/ui/navigation-menu.tsx",
+    "build-template/src/frontend/src/components/ui/pagination.tsx",
+    "build-template/src/frontend/src/components/ui/popover.tsx",
+    "build-template/src/frontend/src/components/ui/progress.tsx",
+    "build-template/src/frontend/src/components/ui/radio-group.tsx",
+    "build-template/src/frontend/src/components/ui/resizable.tsx",
+    "build-template/src/frontend/src/components/ui/scroll-area.tsx",
+    "build-template/src/frontend/src/components/ui/select.tsx",
+    "build-template/src/frontend/src/components/ui/separator.tsx",
+    "build-template/src/frontend/src/components/ui/sheet.tsx",
+    "build-template/src/frontend/src/components/ui/sidebar.tsx",
+    "build-template/src/frontend/src/components/ui/skeleton.tsx",
+    "build-template/src/frontend/src/components/ui/slider.tsx",
+    "build-template/src/frontend/src/components/ui/sonner.tsx",
+    "build-template/src/frontend/src/components/ui/switch.tsx",
+    "build-template/src/frontend/src/components/ui/table.tsx",
+    "build-template/src/frontend/src/components/ui/tabs.tsx",
+    "build-template/src/frontend/src/components/ui/textarea.tsx",
+    "build-template/src/frontend/src/components/ui/toggle-group.tsx",
+    "build-template/src/frontend/src/components/ui/toggle.tsx",
+    "build-template/src/frontend/src/components/ui/tooltip.tsx",
+    "build-template/src/frontend/src/hooks/use-mobile.tsx",
+    "build-template/src/frontend/src/lib/utils.ts",
+    "build-template/src/frontend/tsconfig.json",
+    "build-template/src/frontend/vite.config.js",
+    "build-template/tsconfig.json",
+    "caffeine.lock.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/public/assets/generated/car-01.dim_512x256.png",
+    "frontend/public/assets/generated/car-02.dim_512x256.png",
+    "frontend/public/assets/generated/car-03.dim_512x256.png",
+    "frontend/public/assets/generated/car-04.dim_512x256.png",
+    "frontend/public/assets/generated/car-05.dim_512x256.png",
+    "frontend/public/assets/generated/car-06.dim_512x256.png",
+    "frontend/public/assets/generated/car-07.dim_512x256.png",
+    "frontend/public/assets/generated/car-08.dim_512x256.png",
+    "frontend/public/assets/generated/car-09.dim_512x256.png",
+    "frontend/public/assets/generated/car-10.dim_512x256.png",
+    "frontend/public/assets/generated/car-11.dim_512x256.png",
+    "frontend/public/assets/generated/icon-diamond.dim_256x256.png",
+    "frontend/public/assets/generated/icon-gold.dim_256x256.png",
+    "frontend/public/assets/generated/logo.dim_512x512.png",
+    "frontend/public/assets/generated/racing-bg.dim_1920x1080.png",
+    "frontend/src/App.tsx",
+    "frontend/src/api/playerApi.ts",
+    "frontend/src/auth/guestSession.ts",
+    "frontend/src/auth/useAuthMode.ts",
+    "frontend/src/auth/useGuestSession.ts",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/CurrencyBalances.tsx",
+    "frontend/src/components/GameLayout.tsx",
+    "frontend/src/components/HeaderBar.tsx",
+    "frontend/src/components/NavigationBar.tsx",
+    "frontend/src/components/PlayerProgress.tsx",
+    "frontend/src/config.ts",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/gameData/diamondPacks.ts",
+    "frontend/src/gameData/luxuryCars.ts",
+    "frontend/src/gameData/missions.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/utils.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/AuthPage.tsx",
+    "frontend/src/pages/GaragePage.tsx",
+    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/pages/MissionsPage.tsx",
+    "frontend/src/pages/RaceLobbyPage.tsx",
+    "frontend/src/pages/TopUpPage.tsx",
+    "frontend/src/ui-summary.json",
+    "frontend/src/utils/StorageClient.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}
